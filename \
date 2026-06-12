@@ -1,0 +1,102 @@
+return {
+  {
+    "stevearc/conform.nvim",
+    -- event = 'BufWritePre', -- uncomment for format on save
+    opts = require "configs.conform",
+  },
+
+  -- These are some examples, uncomment them if you want to see them work!
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require "configs.lspconfig"
+    end,
+  },
+{
+  "nvimtools/none-ls.nvim",          -- statt null-ls
+  dependencies = { "nvim-lua/plenary.nvim" },
+},
+
+{
+  'mrcjkb/rustaceanvim',
+  version = '^6', -- Recommended
+  lazy = false, -- This plugin is already lazy
+    settings = {
+      ["rust-analyzer"] = {
+        -- WICHTIG: nur cargo check
+        checkOnSave = {
+          command = "check",
+        },
+},
+},
+},
+
+
+  {
+    "echasnovski/mini.nvim",
+    version = false, -- immer latest (empfohlen)
+    lazy = true,
+    config = function()
+      -- essentials
+require("mini.pairs").setup({
+  mappings = {
+    ["("] = { action = "open", pair = "()", neigh_pattern = "[^\\]." },
+    ["["] = { action = "open", pair = "[]", neigh_pattern = "[^\\]." },
+    ["{"] = { action = "open", pair = "{}", neigh_pattern = "[^\\]." },
+
+    [")"] = { action = "close", pair = "()", neigh_pattern = "[^\\]." },
+    ["]"] = { action = "close", pair = "[]", neigh_pattern = "[^\\]." },
+    ["}"] = { action = "close", pair = "{}", neigh_pattern = "[^\\]." },
+
+    ['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[^\\].", register = { cr = false } },
+    ["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[^%a\\].", register = { cr = false } },
+    ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^\\].", register = { cr = false } },
+
+    ["<"] = { action = "open",  pair = "<>", neigh_pattern = "[^\\]." },
+    [">"] = { action = "close", pair = "<>", neigh_pattern = "[^\\]." },
+  },
+})
+      require("mini.surround").setup()
+      require("mini.ai").setup()
+require("mini.move").setup({
+  mappings = {
+    left = "<M-h>",
+    right = "<M-l>",
+    down = "<M-j>",
+    up = "<M-k>",
+
+    line_left = "<M-h>",
+    line_right = "<M-l>",
+    line_down = "<M-j>",
+    line_up = "<M-k>",
+  },
+  options = {
+    reindent_linewise = true,
+  },
+})
+require("mini.surround").setup({
+  mappings = {
+    add = "sa",
+    delete = "sd",
+    find = "sf",
+    find_left = "sF",
+    highlight = "sh",
+    replace = "sr",
+    update_n_lines = "sn",
+  },})
+
+    end,
+  },
+  -- test new blink
+  { import = "nvchad.blink.lazyspec" },
+
+  -- {
+  -- 	"nvim-treesitter/nvim-treesitter",
+  -- 	opts = {
+  -- 		ensure_installed = {
+  -- 			"vim", "lua", "vimdoc",
+  --      "html", "css"
+  -- 		},
+  -- 	},
+  -- },
+}
