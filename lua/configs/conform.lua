@@ -10,10 +10,18 @@ local options = {
     -- html = { "prettier" },
   },
 
-  format_on_save = {
-    timeout_ms = 500,
-    lsp_format = "fallback",
-  },
+  format_on_save = function(bufnr)
+    -- ipynb.nvim: Edit-Float-Buffer und Facade-Buffer NICHT formatieren.
+    -- Das Formatieren über BufWritePre ändert den Edit-Buffer, ohne den
+    -- Facade-Buffer zu synchronisieren -> Speichern verwirft die Änderungen.
+    if vim.b[bufnr].ipynb_is_edit_buffer or vim.bo[bufnr].filetype == "ipynb" then
+      return nil
+    end
+    return {
+      timeout_ms = 500,
+      lsp_format = "fallback",
+    }
+  end,
 }
 
 return options
