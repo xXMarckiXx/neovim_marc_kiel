@@ -6,6 +6,41 @@ local vscode = require "vscode"
 local map = vim.keymap.set
 vim.g.mapleader = " "
 
+-- Yank/Delete/Paste nutzen das System-Clipboard (+) -> wl-copy/wl-paste
+vim.opt.clipboard = "unnamedplus"
+
+vim.g.clipboard = {
+  name = "wl-clipboard",
+  copy = {
+    ["+"] = { "wl-copy" },
+    ["*"] = { "wl-copy", "--primary" },
+  },
+  paste = {
+    ["+"] = { "wl-paste", "--no-newline" },
+    ["*"] = { "wl-paste", "--no-newline", "--primary" },
+  },
+  cache_enabled = 0,
+}
+
+-- mini.surround auch in VSCode: Klammern/Quotes setzen, ersetzen, löschen
+-- (sa = add im Visual-/Normal-Mode, sr = replace, sd = delete ...)
+-- mini.nvim ist über lazy installiert -> Pfad in den runtimepath aufnehmen.
+vim.opt.rtp:append(vim.fn.stdpath "data" .. "/lazy/mini.nvim")
+local ok_surround, surround = pcall(require, "mini.surround")
+if ok_surround then
+  surround.setup {
+    mappings = {
+      add = "sa",
+      delete = "sd",
+      find = "sf",
+      find_left = "sF",
+      highlight = "sh",
+      replace = "sr",
+      update_n_lines = "sn",
+    },
+  }
+end
+
 -- Speichern (:w wird von VSCode als Save behandelt)
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
 
@@ -46,3 +81,5 @@ end, { desc = "Next Problem" })
 map("n", "<C-k>", function()
   vscode.action "editor.action.marker.prevInFiles"
 end, { desc = "Prev Problem" })
+
+vim.notify "vscode-init.lua wurde geladen!"
