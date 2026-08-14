@@ -86,3 +86,7 @@ map("i", "<C-d>", "<Del>")
 
 -- Golang Keybinding
 vim.keymap.set("i", "<M-=>", ":=", { noremap = true, silent = true })
+
+-- Telescope Funtkionen Finden
+map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Find symbols in file" })
+map("n", "<leader>fS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", { desc = "Find symbols in workspace" })

@@ -35,9 +35,10 @@ return {
 
   {
     "mrcjkb/rustaceanvim",
-    version = "^6",
+    -- v9 setzt Neovim 0.12 voraus; v8 ist der neueste Major fuer 0.11
+    version = "^8",
     ft = { "rust" }, -- lädt nur bei Rust-Dateien
-    config = function()
+    init = function()
       vim.g.rustaceanvim = {
         server = {
           settings = {
@@ -143,11 +144,37 @@ return {
     "saghen/blink.cmp",
     opts = function(_, opts)
       opts.keymap = opts.keymap or {}
-      -- egal welches preset du nutzt, wir überschreiben Tab gezielt:
-      opts.keymap["<Tab>"] = { "snippet_forward", "select_next", "fallback" }
-      opts.keymap["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" }
+
+      -- Reihenfolge ist wichtig:
+      --   1. Menü offen        -> durch die Vorschläge blättern
+      --   2. Cursor im Snippet -> zum nächsten/vorherigen Argument springen
+      --   3. sonst             -> ganz normales Tab
+      opts.keymap["<Tab>"] = { "select_next", "snippet_forward", "fallback" }
+      opts.keymap["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" }
+      -- Vorschlag übernehmen (expandiert bei Funktionen die Argument-Platzhalter)
+      opts.keymap["<CR>"] = { "accept", "fallback" }
+
+      -- NvChad startet LuaSnip mit history = true. blink fragt für snippet_forward
+      -- sonst ls.jumpable() ab, und das bleibt dadurch auch nach dem Verlassen eines
+      -- Snippets dauerhaft true -> jedes Tab wird abgefangen, select_next kommt nie dran.
+      -- locally_jumpable prüft stattdessen, ob der Cursor wirklich noch im Snippet steht.
+      opts.snippets = opts.snippets or {}
+      opts.snippets.active = function(filter)
+        return require("luasnip").locally_jumpable(filter and filter.direction or 1)
+      end
+      opts.snippets.jump = function(direction)
+        local ls = require "luasnip"
+        return ls.locally_jumpable(direction) and ls.jump(direction)
+      end
     end,
   },
+  -- {
+  --   "windwp/nvim-autopairs",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("nvim-autopairs").setup {}
+  --   end,
+  -- },
   -- {
   --   "xXMarckiXx/ipynb.nvim",
   --   lazy = false,
