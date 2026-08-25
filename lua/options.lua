@@ -29,7 +29,7 @@ vim.opt.wildignore = ".hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,di
 --vim.opt.tabstop = 8
 -- vim.opt.expandtab = false
 -- case-insensitive search/replace
--- vim.opt.ignorecase = true
+vim.opt.ignorecase = true
 -- unless uppercase in search term
 -- vim.opt.smartcase = true
 -- never ever make my terminal beep
@@ -48,10 +48,12 @@ vim.opt.wildignore = ".hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,di
 --- except in Rust where the rule is 100 characters
 -- vim.api.nvim_create_autocmd("Filetype", { pattern = "rust", command = "set colorcolumn=100" })
 -- show more hidden characters
--- also, show tabs nicer
+-- also, show tabs nicer Vielleicht später auskommentieren
+-- vim.opt.list = true
 -- vim.opt.listchars = "tab:^ ,nbsp:¬,extends:»,precedes:«,trail:•"
 
-vim.g.python_host_prog = "/home/marc/.local/share/mise/installs/python/3.14.2/bin/python"
+-- python_host_prog brauche ich nicht mehr
+-- vim.g.python_host_prog = "/home/marc/.local/share/mise/installs/python/3.14.2/bin/python"
 -- add yours here!
 vim.opt.guicursor = ""
 

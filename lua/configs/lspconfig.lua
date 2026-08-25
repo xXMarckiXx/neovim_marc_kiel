@@ -1,7 +1,14 @@
 require("nvchad.configs.lspconfig").defaults()
 
+-- Python: Arbeitsteilung
+--   pyright -> Typen, Completion, Hover, Go-to-Definition
+--   ruff    -> Linting (pyflakes/pycodestyle/isort/... in einem Binary)
 vim.lsp.config("pyright", {
   settings = {
+    pyright = {
+      -- Imports sortiert ruff
+      disableOrganizeImports = true,
+    },
     python = {
       analysis = {
         autoImportCompletions = true,
@@ -14,6 +21,34 @@ vim.lsp.config("pyright", {
       },
     },
   },
+})
+
+vim.lsp.config("ruff", {
+  init_options = {
+    settings = {
+      -- Projektweite pyproject.toml / ruff.toml gewinnt immer ueber diese Defaults.
+      lineLength = 88,
+      lint = {
+        select = {
+          "E", -- pycodestyle Fehler
+          "F", -- pyflakes (ungenutzte Imports/Variablen, echte Bugs)
+          "I", -- isort (Import-Reihenfolge)
+          "UP", -- pyupgrade (veraltete Syntax)
+          "B", -- flake8-bugbear (haeufige Fallstricke)
+        },
+      },
+    },
+  },
+})
+
+-- ruff kann kein Hover; sonst gewinnt es gegen pyright und man sieht nichts.
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.name == "ruff" then
+      client.server_capabilities.hoverProvider = false
+    end
+  end,
 })
 
 vim.lsp.config("clangd", {
@@ -45,30 +80,30 @@ vim.lsp.config("lua_ls", {
   },
 })
 
-vim.lsp.config("hyprlang", {
-  cmd = { "hyprls" },
-  filetypes = { "hyprlang" },
-  settings = {
-    hyprls = {
-      preferIgnoreFile = false,
-    },
-  },
-})
-
-vim.lsp.config("zls", {
-  cmd = { "zls" },
-  filetypes = { "zig" },
-  root_markers = { "build.zig", ".git" },
-  single_file_support = true,
-})
-
 vim.lsp.config("gopls", {
   cmd = { "gopls" },
   filetypes = { "go", "gomod", "gowork", "gotmpl" },
   root_markers = { "go.work", "go.mod", ".git" },
 })
 
-local servers = { "html", "cssls", "pyright", "clangd", "lua_ls", "hyprlang", "zls", "gopls" }
+-- Dockerfile LSP
+vim.lsp.config("dockerls", {
+  settings = {
+    docker = {
+      languageserver = {
+        formatter = {
+          ignoreMultilineInstructions = true,
+        },
+      },
+    },
+  },
+})
+
+-- docker-compose LSP
+vim.lsp.config("docker_compose_language_service", {})
+
+local servers =
+  { "html", "cssls", "pyright", "ruff", "clangd", "lua_ls", "gopls", "dockerls", "docker_compose_language_service" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers
