@@ -99,11 +99,40 @@ vim.lsp.config("dockerls", {
   },
 })
 
+-- Plugin: "b0o/schemastore.nvim" in deine Plugin-Liste, dann:
+vim.lsp.config("jsonls", {
+  settings = {
+    json = {
+      schemas = require("schemastore").json.schemas(),
+      validate = { enable = true },
+    },
+  },
+})
+
 -- docker-compose LSP
 vim.lsp.config("docker_compose_language_service", {})
 
-local servers =
-  { "html", "cssls", "pyright", "ruff", "clangd", "lua_ls", "gopls", "dockerls", "docker_compose_language_service" }
+local servers = {
+  "html",
+  "cssls",
+  "bashls", -- bash-language-server
+  "clangd",
+  "dockerls", -- dockerfile-language-server
+  "docker_compose_language_service",
+  "emmet_language_server", -- emmet-language-server
+  "gopls",
+  "hyprls",
+  "jsonls", -- json-lsp
+  "lua_ls",
+  "neocmake", -- neocmakelsp
+  "postgres_lsp", -- postgrestools
+  "pyright",
+  "ruff",
+  "rust_analyzer", -- rust-analyzer
+  "taplo",
+  "ts_ls", -- typescript-language-server
+}
+
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers

@@ -264,4 +264,46 @@ return {
       },
     },
   },
+  { "b0o/schemastore.nvim" },
+
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        -- LSP-Server
+        "bash-language-server",
+        "clangd",
+        "docker-compose-language-service",
+        "dockerfile-language-server",
+        "emmet-language-server",
+        "gopls",
+        "hyprls",
+        "json-lsp",
+        "lua-language-server",
+        "neocmakelsp",
+        "postgrestools", -- nur Postgres; für gemischte DBs stattdessen "sqls"
+        -- "sqls",
+        "pyright",
+        "ruff",
+        "rust-analyzer",
+        "taplo",
+        "typescript-language-server",
+
+        -- Formatter
+        "black",
+        "clang-format",
+        "prettier",
+        "shfmt",
+        "stylua",
+
+        -- Linter
+        "hadolint",
+        "shellcheck",
+
+        -- Debug-Adapter (nvim-dap)
+        "codelldb",
+        "debugpy",
+      },
+    },
+  },
 }
