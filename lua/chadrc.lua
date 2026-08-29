@@ -6,11 +6,11 @@
 local M = {}
 
 M.base46 = {
-  theme = "catppuccin",
+  theme = "tokyonight",
   transparency = true,
 
-  hl_override = {},
-  hl_add = {},
+  -- hl_override = {},
+  -- hl_add = {},
 }
 
 -- M.nvdash = { load_on_startup = true }

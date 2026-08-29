@@ -217,13 +217,19 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
+    main = "nvim-treesitter.configs", -- sonst ruft lazy require("nvim-treesitter").setup() auf
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
     opts = function(_, opts)
-      -- Parser-Liste erweitern (nicht ersetzen)
+      opts.highlight = { enable = true }
+      opts.indent = { enable = true }
+
       opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, {
         "bash",
         "c",
-        "cpp", -- ohne diesen Parser faellt C++ auf die alte syntax/cpp.vim zurueck
+        "cpp",
         "cmake",
         "css",
         "diff",

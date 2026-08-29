@@ -27,12 +27,12 @@ vim.lsp.config("ruff", {
   init_options = {
     settings = {
       -- Projektweite pyproject.toml / ruff.toml gewinnt immer ueber diese Defaults.
-      lineLength = 88,
+      lineLength = 80,
       lint = {
         select = {
           "E", -- pycodestyle Fehler
           "F", -- pyflakes (ungenutzte Imports/Variablen, echte Bugs)
-          "I", -- isort (Import-Reihenfolge)
+          -- "I", -- isort (Import-Reihenfolge)
           "UP", -- pyupgrade (veraltete Syntax)
           "B", -- flake8-bugbear (haeufige Fallstricke)
         },
@@ -128,7 +128,7 @@ local servers = {
   "postgres_lsp", -- postgrestools
   "pyright",
   "ruff",
-  "rust_analyzer", -- rust-analyzer
+  -- "rust_analyzer", -- rust-analyzer
   "taplo",
   "ts_ls", -- typescript-language-server
 }
