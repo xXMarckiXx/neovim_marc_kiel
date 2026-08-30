@@ -27,7 +27,7 @@ vim.lsp.config("ruff", {
   init_options = {
     settings = {
       -- Projektweite pyproject.toml / ruff.toml gewinnt immer ueber diese Defaults.
-      lineLength = 80,
+      lineLength = 88,
       lint = {
         select = {
           "E", -- pycodestyle Fehler
