@@ -217,16 +217,10 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
-    main = "nvim-treesitter.configs", -- sonst ruft lazy require("nvim-treesitter").setup() auf
+    branch = "main",
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = function(_, opts)
-      opts.highlight = { enable = true }
-      opts.indent = { enable = true }
-
-      opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, {
+    config = function()
+      require("nvim-treesitter").install {
         "bash",
         "c",
         "cpp",
@@ -246,6 +240,11 @@ return {
         "toml",
         "yaml",
         "zig",
+      }
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
       })
     end,
   },
