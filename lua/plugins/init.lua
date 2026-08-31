@@ -272,6 +272,13 @@ return {
   { "b0o/schemastore.nvim" },
 
   {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
+    ft = { "markdown" },
+    opts = {},
+  },
+
+  {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
