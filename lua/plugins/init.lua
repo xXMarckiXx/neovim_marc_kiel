@@ -230,6 +230,7 @@ return {
         "go",
         "html",
         "json",
+        "lua",
         "make",
         "markdown",
         "markdown_inline",
